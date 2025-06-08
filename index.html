@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Johnson Website Solutions - AI Powered Web Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; line-height: 1.7; }
+        .hero-section { 
+            background-image: url('https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: #0284c7; text-align: center; }
+        .section-subtitle { font-size: 1.25rem; color: #475569; text-align: center; max-width: 700px; margin: 0 auto 3rem auto; }
+        .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05); transition: all 0.3s ease-in-out; overflow: hidden; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.06); }
+        .btn { padding: 0.875rem 2rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em; }
+        .btn-primary { background-color: #0ea5e9; color: white; }
+        .btn-primary:hover { background-color: #0284c7; transform: scale(1.05); }
+        .btn-secondary { background-color: #f59e0b; color: white; }
+        .btn-secondary:hover { background-color: #d97706; transform: scale(1.05); }
+        .btn-accent { background-color: #7c3aed; color: white; }
+        .btn-accent:hover { background-color: #6d28d9; transform: scale(1.05); }
+        .nav-link { padding: 0.75rem 1rem; color: #334155; font-weight: 600; transition: color 0.3s ease, transform 0.2s ease; position: relative; }
+        .nav-link:hover { color: #0ea5e9; transform: translateY(-2px); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; background-color: #0ea5e9; transition: all 0.3s ease-out; transform: translateX(-50%); }
+        .nav-link:hover::after, .nav-link.active::after { width: 70%; }
+        .mobile-nav-link { display: block; padding: 1rem 1.5rem; color: #1e293b; font-weight: 600; transition: background-color 0.3s ease, color 0.3s ease; border-bottom: 1px solid #e2e8f0;}
+        .mobile-nav-link:hover { background-color: #e0f2fe; color: #0284c7; }
+        #mobileMenu { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+        .chart-container { position: relative; width: 100%; max-width: 380px; margin-left: auto; margin-right: auto; height: 320px; max-height: 380px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .deliverable-item { display: flex; align-items: flex-start; margin-bottom: 1rem; font-size: 1.1rem; }
+        .deliverable-icon { color: #10b981; margin-right: 1rem; font-size: 1.6rem; line-height: 1; margin-top: 0.125rem; }
+        input[type="text"], input[type="email"], textarea, select {
+            border: 2px solid #cbd5e1; padding: 0.875rem 1rem; border-radius: 0.5rem; width: 100%;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; font-size: 1rem;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+            border-color: #0ea5e9; box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2); outline: none;
+        }
+        .portfolio-card-image { height: 200px; background-size: cover; background-position: center; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; transition: transform 0.4s ease; }
+        .card:hover .portfolio-card-image { transform: scale(1.05); }
+        .pricing-card-popular { border: 3px solid #0ea5e9; transform: scale(1.05); }
+        
+        .animate-on-scroll { opacity: 0; transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-down { transform: translateY(-30px); }
+        .fade-in-up { transform: translateY(30px); }
+        .fade-in-left { transform: translateX(-30px); }
+        .fade-in-right { transform: translateX(30px); }
+        .is-visible { opacity: 1; transform: translateY(0) translateX(0); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 1rem; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background-color: #4a5568; border-radius: 0.75rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.06); width: 95%; max-width: 1100px; height: 90vh; max-height: 90vh; overflow: hidden; position: relative; transform: scale(0.95); transition: transform 0.3s ease; display: flex; flex-direction: column; }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; background-color: #2d3748; color: white; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; }
+        .modal-title { font-size: 1.1rem; font-weight: 600; }
+        .modal-close-btn { background: none; border: none; font-size: 1.8rem; color: white; cursor: pointer; padding: 0.25rem 0.5rem; line-height: 1; border-radius: 0.25rem; }
+        .modal-close-btn:hover { color: #e0e0e0; }
+        .modal-iframe-container { flex-grow: 1; overflow: hidden; background-color: white; border-bottom-left-radius: 0.75rem; border-bottom-right-radius: 0.75rem; }
+        .modal-iframe-container iframe { width: 100%; height: 100%; border: none; }
+        
+        .ai-suggestion-box { background-color: #e0f2fe; border: 1px solid #7dd3fc; color: #0c4a6e; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; font-size: 0.9rem; }
+        .ai-suggestion-box h5 { font-weight: 700; margin-bottom: 0.5rem; color: #0369a1; }
+        .ai-suggestion-box ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.5rem; }
+        .ai-suggestion-box button { background-color: #0ea5e9; color: white; padding: 0.375rem 0.75rem; border-radius: 0.375rem; font-size: 0.8rem; border: none; cursor: pointer; margin-top: 0.5rem; margin-right: 0.5rem; }
+        .ai-suggestion-box button:hover { background-color: #0284c7; }
+        
+        .faq-item, .terms-item { background-color: #fff; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); }
+        .faq-question, .terms-item h3 { font-size: 1.25rem; font-weight: 600; color: #0284c7; margin-bottom: 0.75rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer, .terms-item p, .terms-item ul { color: #334155; font-size: 1rem; line-height: 1.7; }
+        .terms-item ul { list-style: disc; padding-left: 1.5rem; margin-top: 0.5rem; }
+        .faq-answer { padding-top: 0.5rem; border-top: 1px solid #e2e8f0; margin-top: 0.75rem; }
+        .faq-item.active .faq-answer { display: block; }
+        .faq-question .toggle-icon { transition: transform 0.3s ease; }
+        .faq-item.active .faq-question .toggle-icon { transform: rotate(45deg); }
+
+        /* Styles for AI Design Consultant */
+        #ai-consultant-form label {
+            font-weight: 600;
+            color: #4b5563; /* Tailwind gray-600 */
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        #ai-consultant-form input[type="text"],
+        #ai-consultant-form textarea,
+        #ai-consultant-form select {
+            background-color: #f9fafb; /* Tailwind gray-50 */
+            border-color: #d1d5db; /* Tailwind gray-300 */
+        }
+        #ai-consultant-form input[type="text"]:focus,
+        #ai-consultant-form textarea:focus,
+        #ai-consultant-form select:focus {
+            border-color: #3b82f6; /* Tailwind blue-500 */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .ai-ideas-display {
+            margin-top: 2rem;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb; /* Tailwind gray-200 */
+        }
+        .ai-ideas-display h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a8a; /* Tailwind blue-800 */
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #93c5fd; /* Tailwind blue-300 */
+            padding-bottom: 0.5rem;
+        }
+        .ai-ideas-display .idea-block {
+            margin-bottom: 1.5rem;
+        }
+        .ai-ideas-display .idea-block h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1d4ed8; /* Tailwind blue-700 */
+            margin-bottom: 0.5rem;
+        }
+        .ai-ideas-display .idea-block textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background-color: white;
+        }
+        .ai-ideas-display .idea-block textarea:focus {
+             border-color: #3b82f6; 
+             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+             outline: none;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <header id="header" class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-3xl font-extrabold text-sky-600 tracking-tight">JWS<span class="text-amber-500">.</span></a>
+                </div>
+                <nav class="hidden md:flex space-x-1">
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#ai-consultant" class="nav-link">AI Consultant</a> <a href="#portfolio" class="nav-link">Portfolio</a>
+                    <a href="#pricing" class="nav-link">Pricing</a>
+                    <a href="#faq" class="nav-link">FAQ</a>
+                    <a href="#terms" class="nav-link">Service Terms</a>
+                    <a href="#contact" class="nav-link btn btn-primary !text-white !px-6 !py-2.5">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobileMenuButton" class="text-slate-700 hover:text-sky-600 focus:outline-none p-2 rounded-md">
+                        <svg id="menuIconOpen" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                        <svg id="menuIconClose" class="h-7 w-7 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden absolute top-full left-0 right-0 bg-white shadow-xl py-2 transform opacity-0 -translate-y-2">
+            <a href="#about" class="mobile-nav-link">About</a>
+            <a href="#services" class="mobile-nav-link">Services</a>
+            <a href="#ai-consultant" class="mobile-nav-link">AI Consultant</a> <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+            <a href="#pricing" class="mobile-nav-link">Pricing</a>
+            <a href="#faq" class="mobile-nav-link">FAQ</a>
+            <a href="#terms" class="mobile-nav-link">Service Terms</a>
+            <a href="#contact" class="mobile-nav-link">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section text-white relative">
+            <div class="absolute inset-0 bg-black/50"></div>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center justify-center min-h-[80vh] md:min-h-[calc(100vh-5rem)] py-20">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight animate-on-scroll fade-in-down" data-delay="100">Johnson Website Solutions</h1>
+                <p class="text-xl sm:text-2xl md:text-3xl mb-10 max-w-3xl animate-on-scroll fade-in-up" data-delay="300">“Let me take care of your website while you focus on running your business.”</p>
+                <a href="#contact" class="btn btn-secondary text-lg animate-on-scroll fade-in-up" data-delay="500">Launch Your Vision</a>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 md:py-28 bg-slate-100">
+             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sky-600 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Meet the Maker</p>
+                <h2 class="section-title animate-on-scroll fade-in-down" data-delay="100">About Me & My Mission</h2>
+                <div class="md:grid md:grid-cols-5 md:gap-12 items-center">
+                    <div class="md:col-span-2 flex justify-center md:justify-start mb-10 md:mb-0 animate-on-scroll fade-in-left" data-delay="300">
+                        <img src="profilepic.jpg" alt="Randy Johnson - Owner & Lead Developer" class="w-44 h-44 md:w-48 md:h-48 lg:w-56 lg:h-56 object-cover rounded-full shadow-xl border-4 border-white" onerror="this.onerror=null;this.src='https://placehold.co/224x224/e2e8f0/334155?text=R.J.';">
+                    </div>
+                    <div class="md:col-span-3 animate-on-scroll fade-in-right" data-delay="400">
+                        <h3 class="text-3xl font-bold text-slate-800 mb-4">Randy Johnson, BBA</h3>
+                        <p class="text-amber-600 font-semibold text-lg mb-6">Owner & Lead Developer, Johnson Website Solutions</p>
+                        <div class="space-y-4 text-slate-700">
+                            <p>Hello! I'm Randy Johnson, the founder and sole developer at Johnson Website Solutions, based right here in Lexington, KY. After earning my Bachelor of Business Administration from Eastern Kentucky University, I saw a real need among local entrepreneurs and small businesses for straightforward, effective, and affordable web solutions. That's why I started JWS – to cut through the complexity and deliver websites that truly work for you.</p>
+                            <p><strong class="font-semibold text-slate-800">My Commitment to You:</strong> All work is done by me personally. This means no outsourcing, no confusing jargon, and no gimmicks. You get a direct line of communication and a partner who understands that your website is a vital tool for your business success. I combine my technical skills with my business insights to ensure your online presence is not just visually appealing but also strategically sound.</p>
+                            <p><strong class="font-semibold text-slate-800">Our Mission:</strong> To code fast, reliable websites and provide seamless, fully-managed hosting for solo entrepreneurs, small businesses, and side hustlers in Lexington and beyond. We aim to provide a quick, dependable, and professional online presence so you can focus on what you do best – running your business.</p>
+                            <p>I believe in a collaborative process, working closely with you to understand your vision and bring it to life. If you're looking for a dedicated, local partner to build or enhance your web presence, I'd be delighted to discuss your project. <a href="#contact" class="text-sky-600 hover:text-sky-700 font-semibold">Let's connect!</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sky-600 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Our Offerings</p>
+                <h2 class="section-title animate-on-scroll fade-in-down" data-delay="100">What You Get: A Unified Solution</h2>
+                <p class="section-subtitle animate-on-scroll fade-in-down" data-delay="200">Our all-inclusive plan covers custom design, your first year's domain, and fully managed hosting. We handle the technical complexities so you can focus on your passion.</p>
+                <div class="grid lg:grid-cols-5 gap-10 items-center">
+                    <div class="lg:col-span-3 animate-on-scroll fade-in-left" data-delay="300">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-8">Core Deliverables Included:</h3>
+                        <ul id="deliverablesList" class="space-y-3">
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Custom 1-page or 3-page website tailored to your brand.</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Custom Resume Website (perfect for professionals).</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Optimized for speed & fully mobile-friendly design.</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Your own .com domain name (first year included).</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Secure, high-performance hosting by JWS, built on industry-leading global infrastructure (including platforms like Netlify) for optimal uptime and speed. Fully managed, so you don't touch the technical details.</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Integrated contact form (leads emailed directly to you).</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Rapid turnaround: Go live in days, not weeks.</li>
+                            <li class="deliverable-item"><span class="deliverable-icon">✓</span>Optional ongoing support & website updates (see our <a href="#terms" class="text-sky-600 hover:underline">Service Terms</a> for details).</li>
+                        </ul>
+                    </div>
+                    <div class="lg:col-span-2 card p-6 md:p-8 text-center animate-on-scroll fade-in-right" data-delay="400">
+                        <h4 class="text-xl font-semibold text-sky-700 mb-2">Value Breakdown: $199 Setup</h4>
+                        <p class="text-slate-600 mb-5 text-sm">The initial setup fee is packed with essential value to launch your online presence effectively.</p>
+                        <div class="chart-container">
+                            <canvas id="setupValueChart"></canvas>
+                        </div>
+                        <p id="chartHoverDetail" class="mt-5 text-slate-500 h-6 text-sm">&nbsp;</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ai-consultant" class="py-20 md:py-28 bg-gradient-to-br from-sky-600 via-sky-500 to-indigo-500 text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-amber-300 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Interactive Planning</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-center mb-4 animate-on-scroll fade-in-down" data-delay="100">AI Website Design Consultant</h2>
+                <p class="text-center text-lg sm:text-xl text-sky-100 mb-10 max-w-3xl mx-auto animate-on-scroll fade-in-down" data-delay="200">Let's brainstorm your website! Answer a few questions below, and our AI assistant will help generate initial ideas for your site structure, content, and style. You can then edit these ideas and submit them to us as a starting point for your project.</p>
+                
+                <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-sm p-8 rounded-xl shadow-2xl animate-on-scroll fade-in-up" data-delay="300">
+                    <form id="ai-consultant-form" class="space-y-6">
+                        <div>
+                            <label for="consultBusinessName">Business/Project Name:</label>
+                            <input type="text" id="consultBusinessName" name="consultBusinessName" class="!text-slate-800" placeholder="e.g., Sarah's Coaching Corner" required>
+                        </div>
+                        <div>
+                            <label for="consultBusinessType">Type of Business/Industry:</label>
+                            <input type="text" id="consultBusinessType" name="consultBusinessType" class="!text-slate-800" placeholder="e.g., Business Coach, Local Bakery, Freelance Photographer" required>
+                        </div>
+                        <div>
+                            <label for="consultWebsiteGoal">Main Goal of Your Website:</label>
+                            <select id="consultWebsiteGoal" name="consultWebsiteGoal" class="!text-slate-800">
+                                <option value="generate leads">Generate Leads / Get Inquiries</option>
+                                <option value="sell products/services">Sell Products/Services Directly</option>
+                                <option value="provide information">Provide Information / Build Brand Awareness</option>
+                                <option value="showcase portfolio">Showcase Portfolio / Work</option>
+                                <option value="other">Other (please specify below)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="consultTargetAudience">Who is your Target Audience?</label>
+                            <input type="text" id="consultTargetAudience" name="consultTargetAudience" class="!text-slate-800" placeholder="e.g., Local residents, new entrepreneurs, specific demographics">
+                        </div>
+                        <div>
+                            <label for="consultPreferredStyle">Preferred Style/Feel for the Website:</label>
+                            <input type="text" id="consultPreferredStyle" name="consultPreferredStyle" class="!text-slate-800" placeholder="e.g., Modern & clean, friendly & approachable, artistic & creative">
+                        </div>
+                        <div>
+                            <label for="consultKeyInfo">Key Information/Sections to Include:</label>
+                            <textarea id="consultKeyInfo" name="consultKeyInfo" rows="3" class="!text-slate-800" placeholder="e.g., About Us, Services details, Pricing, Testimonials, Blog, Photo Gallery..."></textarea>
+                        </div>
+                         <div>
+                            <label for="consultBranding">Existing Branding (Colors, Logo Idea - Optional):</label>
+                            <input type="text" id="consultBranding" name="consultBranding" class="!text-slate-800" placeholder="e.g., Blue and gray, minimalist logo with a leaf">
+                        </div>
+                        <button type="button" id="getAiConsultantIdeas" class="btn btn-secondary w-full text-lg">🤖 Get AI Design Ideas</button>
+                    </form>
+
+                    <div id="aiConsultantLoading" class="text-center text-sky-100 mt-4 hidden">🧠 AI is brainstorming... please wait.</div>
+                    <div id="aiConsultantError" class="text-center text-red-300 mt-4 hidden"></div>
+                    
+                    <div id="aiConsultantIdeasOutput" class="ai-ideas-display hidden mt-6">
+                        <h4>Your AI-Generated Website Blueprint (Editable)</h4>
+                        <div class="idea-block">
+                            <h5>Suggested Site Structure / Pages:</h5>
+                            <textarea id="aiIdeaStructure" rows="4"></textarea>
+                        </div>
+                        <div class="idea-block">
+                            <h5>Key Homepage Content Points:</h5>
+                            <textarea id="aiIdeaHomepageContent" rows="5"></textarea>
+                        </div>
+                        <div class="idea-block">
+                            <h5>Call-to-Action Ideas:</h5>
+                            <textarea id="aiIdeaCTA" rows="3"></textarea>
+                        </div>
+                        <div class="idea-block">
+                            <h5>Visual Style & Tone Notes:</h5>
+                            <textarea id="aiIdeaStyle" rows="3"></textarea>
+                        </div>
+                        <button type="button" id="submitAiBriefToJWS" class="btn btn-primary w-full text-lg mt-4">📧 Submit Project Brief to JWS</button>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-sky-200 mt-6 max-w-md mx-auto">This AI Design Consultant uses Google's Gemini API to help you structure your thoughts. The generated ideas are a starting point for our collaborative process.</p>
+            </div>
+        </section>
+
+        <section id="portfolio" class="py-20 md:py-28 bg-slate-100">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sky-600 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">My Work</p>
+                <h2 class="section-title animate-on-scroll fade-in-down" data-delay="100">Portfolio Showcase</h2>
+                <p class="section-subtitle animate-on-scroll fade-in-down" data-delay="200">A glimpse into the quality and style I bring to every project. (Demo examples)</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-2">
+                    <div id="modernStartupCard" class="card animate-on-scroll fade-in-up cursor-pointer" data-delay="300">
+                        <div class="portfolio-card-image" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=70');" onerror="this.style.backgroundImage='url(https://placehold.co/800x200/e0e0e0/757575?text=Modern+Site)'"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Modern Startup Site</h3>
+                            <p class="text-slate-600 text-sm mb-4">Clean, responsive design with clear calls to action for a new tech venture.</p>
+                            <span class="text-xs font-semibold bg-sky-100 text-sky-700 px-2 py-1 rounded-full">Web Design</span>
+                        </div>
+                    </div>
+                    <div id="ecommerceCard" class="card animate-on-scroll fade-in-up cursor-pointer" data-delay="400">
+                        <div class="portfolio-card-image" style="background-image: url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=70');" onerror="this.style.backgroundImage='url(https://placehold.co/800x200/e0e0e0/757575?text=E-commerce)'"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">E-commerce Ready</h3>
+                            <p class="text-slate-600 text-sm mb-4">User-friendly interface for a small online boutique, ready for product listings.</p>
+                            <span class="text-xs font-semibold bg-amber-100 text-amber-700 px-2 py-1 rounded-full">Online Store Setup</span>
+                        </div>
+                    </div>
+                    <div id="resumePortfolioCard" class="card animate-on-scroll fade-in-up cursor-pointer" data-delay="500">
+                        <div class="portfolio-card-image" style="background-image: url('https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=70');" onerror="this.style.backgroundImage='url(https://placehold.co/800x200/e0e0e0/757575?text=Portfolio)'"></div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Professional Portfolio</h3>
+                            <p class="text-slate-600 text-sm mb-4">Sleek online resume and project showcase for a creative professional.</p>
+                            <span class="text-xs font-semibold bg-violet-100 text-violet-700 px-2 py-1 rounded-full">Personal Branding</span>
+                        </div>
+                    </div>
+                </div>
+                 <p class="text-center text-md text-slate-500 mt-12 animate-on-scroll fade-in-up" data-delay="600">Your amazing project could be the next one featured!</p>
+            </div>
+        </section>
+
+        <section id="pricing" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sky-600 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Investment</p>
+                <h2 class="section-title animate-on-scroll fade-in-down" data-delay="100">Simple, Transparent Pricing</h2>
+                <p class="section-subtitle animate-on-scroll fade-in-down" data-delay="200">No hidden fees. Clear, upfront costs for getting your business online professionally.</p>
+                <div class="grid md:grid-cols-3 gap-8 text-center mt-2">
+                    <div class="card p-8 animate-on-scroll fade-in-up" data-delay="300">
+                        <div class="mb-4"><span class="text-5xl text-sky-500">🚀</span></div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-3">One-Time Setup</h3>
+                        <p class="text-5xl font-extrabold text-sky-600 mb-4">$199</p>
+                        <ul class="text-slate-600 space-y-2 text-sm">
+                            <li>✓ Custom Website Design</li>
+                            <li>✓ Domain Registration (1st Year)</li>
+                            <li>✓ Full Site Launch & Setup</li>
+                            <li>✓ Mobile Optimization</li>
+                        </ul>
+                    </div>
+                    <div class="card p-8 pricing-card-popular animate-on-scroll fade-in-up" data-delay="400">
+                         <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-4 bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">BEST VALUE</span>
+                        <div class="mb-4"><span class="text-5xl text-amber-500">☁️</span></div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-3">Monthly Hosting</h3>
+                        <p class="text-5xl font-extrabold text-sky-600 mb-1">$10<span class="text-xl font-semibold">/mo</span></p>
+                        <p class="text-xs text-slate-500 mb-4">(Billed Annually)</p>
+                        <ul class="text-slate-600 space-y-2 text-sm">
+                            <li>✓ Secure & Reliable Hosting</li>
+                            <li>✓ SSL Certificate Included</li>
+                            <li>✓ Performance Monitoring</li>
+                            <li>✓ Peace of Mind</li>
+                        </ul>
+                    </div>
+                    <div class="card p-8 animate-on-scroll fade-in-up" data-delay="500">
+                        <div class="mb-4"><span class="text-5xl text-sky-500">🏷️</span></div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-3">Domain Renewal</h3>
+                        <p class="text-5xl font-extrabold text-sky-600 mb-4">$25<span class="text-xl font-semibold">/yr</span></p>
+                        <ul class="text-slate-600 space-y-2 text-sm">
+                            <li>✓ After Initial Included Year</li>
+                            <li>✓ Hassle-Free Auto-Renewal Option</li>
+                            <li>✓ Keep Your Online Identity</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="add-ons" class="mt-20 md:mt-24 animate-on-scroll fade-in-up" data-delay="600">
+                    <h3 class="text-3xl font-bold text-center text-slate-800 mb-12">Optional Add-Ons & Enhancements</h3>
+                    <div class="max-w-3xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card p-6 flex flex-col items-center text-center hover:!shadow-sky-200/50">
+                            <span class="text-4xl text-sky-500 mb-3">📄</span>
+                            <h4 class="text-lg font-semibold text-slate-700">Additional Page(s)</h4>
+                            <p class="text-slate-600 text-2xl font-bold mt-1">$50 <span class="text-sm font-normal">each</span></p>
+                        </div>
+                        <div class="card p-6 flex flex-col items-center text-center hover:!shadow-amber-200/50">
+                            <span class="text-4xl text-amber-500 mb-3">🎨</span>
+                            <h4 class="text-lg font-semibold text-slate-700">Custom Logo Design</h4>
+                            <p class="text-slate-600 text-2xl font-bold mt-1">$75</p>
+                        </div>
+                        <div class="card p-6 flex flex-col items-center text-center sm:col-span-2 lg:col-span-1 hover:!shadow-violet-200/50">
+                             <span class="text-4xl text-violet-500 mb-3">🎬</span>
+                            <h4 class="text-lg font-semibold text-slate-700 mb-2">Video/Logo Animations</h4>
+                            <p class="text-slate-500 text-xs mb-3">AI-Generated (Quote based on complexity)</p>
+                            <input type="text" id="animationBrandIdea" class="!text-slate-800 !border-slate-300 focus:!border-violet-400 focus:!shadow-violet-200/50 !text-sm !p-2 mb-3" placeholder="Briefly describe brand/video idea">
+                            <button id="getAnimationIdeas" class="btn !bg-violet-500 hover:!bg-violet-600 !text-white !text-xs !px-3 !py-1.5 w-full">✨ Get Animation Ideas</button>
+                            <div id="animationIdeaSnippet" class="text-left text-xs text-slate-600 mt-2 h-10"></div>
+                             <p id="animationIdeaError" class="text-center text-red-500 text-xs hidden h-4"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-20 md:py-28 bg-slate-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sky-600 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Common Questions</p>
+                <h2 class="section-title animate-on-scroll fade-in-down" data-delay="100">Frequently Asked Questions</h2>
+                <p class="section-subtitle animate-on-scroll fade-in-down" data-delay="200">Answers to common questions about our services and process.</p>
+                <div class="max-w-3xl mx-auto space-y-4 animate-on-scroll fade-in-up" data-delay="300">
+                    <div class="faq-item">
+                        <h3 class="faq-question">What platform do you use for hosting my website? <span class="toggle-icon text-sky-500 text-2xl">+</span></h3>
+                        <div class="faq-answer">
+                            <p>We leverage robust and modern platforms like Netlify to host client websites. This ensures excellent speed, security, and reliability with global content delivery. All hosting is fully managed by Johnson Website Solutions, so you don't have to worry about the technical details – we handle it all for you as part of your hosting plan.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">Who owns my website and hosting account? <span class="toggle-icon text-sky-500 text-2xl">+</span></h3>
+                        <div class="faq-answer">
+                            <p>You, the client, are the owner of your website content and domain name. For hosting, we typically set up and manage the account on platforms like Netlify to provide you with a seamless, stress-free experience. We ensure you have access to your site's resources and will always provide you with the necessary credentials for your Netlify account. Our goal is transparency and your complete control over your assets. Should you ever choose to move your site or manage hosting yourself, we facilitate a smooth handover. Please see our <a href="#terms" class="text-sky-600 hover:underline">Service Terms</a> for more details.</p>
+                        </div>
+                    </div>
+                     <div class="faq-item">
+                        <h3 class="faq-question">What if my website needs more resources than the standard hosting plan offers? <span class="toggle-icon text-sky-500 text-2xl">+</span></h3>
+                        <div class="faq-answer">
+                            <p>Our standard $10/month hosting plan is designed to generously accommodate the needs of most small business websites, leveraging the free or low-cost tiers of platforms like Netlify. If your website's traffic or resource requirements (e.g., extensive use of serverless functions, very high bandwidth) grow to a point where they exceed these standard provisions and incur additional costs from the underlying platform, we will discuss this with you transparently. Any such additional costs would be passed on to you, but only after prior notification and agreement. Our aim is to keep your hosting affordable and predictable.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">How does the "AI Website Design Consultant" work? <span class="toggle-icon text-sky-500 text-2xl">+</span></h3>
+                        <div class="faq-answer">
+                            <p>Our AI Design Consultant tool uses Google's Gemini API. You provide details about your business, goals, and preferences through a simple form. The AI then analyzes this information to generate initial ideas for your website's structure, key homepage content, calls to action, and visual style. You can review and edit these suggestions before submitting them to us. It's a collaborative way to kickstart the design process and ensure your website vision is clear from the outset.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <h3 class="faq-question">What does "all work done by me personally" mean for my project? <span class="toggle-icon text-sky-500 text-2xl">+</span></h3>
+                        <div class="faq-answer">
+                            <p>It means that I, Randy Johnson, will be your direct point of contact and the primary developer working on your website. This ensures consistency, direct accountability, and a deep understanding of your project from start to finish. It allows me to combine my technical skills with my business background (BBA) to deliver a site that truly aligns with your goals. No outsourcing means you get a dedicated, personal service.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="terms" class="py-20 md:py-28">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-sky-600 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Our Commitment</p>
+                <h2 class="section-title animate-on-scroll fade-in-down" data-delay="100">Hosting Policy & Service Terms Summary</h2>
+                <p class="section-subtitle animate-on-scroll fade-in-down" data-delay="200">Key information about our website development and hosting services. For full details, please refer to your individual service agreement.</p>
+                <div class="max-w-3xl mx-auto space-y-6 animate-on-scroll fade-in-up" data-delay="300">
+                    <div class="terms-item">
+                        <h3><i class="fas fa-server mr-2 text-sky-500"></i>Website Hosting</h3>
+                        <p>Johnson Website Solutions (JWS) provides fully managed web hosting for client websites. We leverage industry-leading, robust, and modern third-party platforms, such as Netlify, to ensure high performance, security (including SSL certificates), and reliability for your website. Our $10/month hosting fee covers the management of this service, standard resource usage, and performance monitoring. We handle the technical setup and ongoing maintenance so you can focus on your business.</p>
+                    </div>
+                    <div class="terms-item">
+                        <h3><i class="fas fa-user-shield mr-2 text-sky-500"></i>Account Ownership & Access</h3>
+                        <p>While JWS typically sets up and manages the hosting account on platforms like Netlify for client convenience and efficient support, you (the client) retain ownership of your website content and domain name. We are committed to transparency and will provide you with the login credentials for your specific site's hosting account (e.g., your Netlify site instance). This ensures you have access and control. Should you decide to terminate our hosting services, we will facilitate a smooth handover of all necessary files and assist with migration where feasible (additional service fees may apply for complex migrations).</p>
+                    </div>
+                    <div class="terms-item">
+                        <h3><i class="fas fa-dollar-sign mr-2 text-sky-500"></i>Billing for Hosting & Platform Costs</h3>
+                        <p>Our standard monthly hosting fee is designed to cover typical resource usage on platforms like Netlify, often within their free or low-cost tiers. If your website's traffic, bandwidth, or use of advanced platform features (e.g., extensive serverless functions, add-ons beyond standard provisions) consistently exceeds these typical allowances and incurs additional costs from the third-party hosting platform, JWS will:
+                            <ul>
+                                <li>Notify you in advance of any potential overages or required plan upgrades on the platform.</li>
+                                <li>Discuss options and seek your approval before any additional charges are incurred.</li>
+                                <li>Pass through these direct platform costs to you, in addition to your standard JWS hosting management fee.</li>
+                            </ul>
+                        Our goal is to provide predictable and affordable hosting, with clear communication regarding any necessary adjustments due to your site's growth.
+                        </p>
+                    </div>
+                     <div class="terms-item">
+                        <h3><i class="fas fa-file-signature mr-2 text-sky-500"></i>Service Agreement</h3>
+                        <p>Upon engagement, you will receive a detailed service agreement outlining the full scope of work, deliverables, payment terms, timelines, policies regarding revisions and ongoing support, and specific terms related to hosting and third-party services. We encourage you to review this agreement carefully. This summary provides an overview, but the formal service agreement will govern our engagement.</p>
+                    </div>
+                    <div class="terms-item">
+                        <h3><i class="fas fa-shield-alt mr-2 text-sky-500"></i>Security & Maintenance</h3>
+                        <p>We take security seriously. Our hosting management includes implementing SSL certificates and monitoring performance. While we strive to maintain a secure environment using reputable platforms, clients are responsible for the security of their own content and login credentials. For client-managed Netlify accounts, ensuring strong, unique passwords is vital. JWS is not liable for security breaches resulting from compromised client credentials or vulnerabilities within client-managed content.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 md:py-28 bg-gradient-to-r from-sky-600 to-sky-700 text-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-amber-400 font-semibold tracking-wider uppercase mb-2 animate-on-scroll fade-in-down">Let's Connect</p>
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-4 animate-on-scroll fade-in-down" data-delay="100">Ready to Start Your Project?</h2>
+                <p class="text-center text-lg sm:text-xl text-sky-100 mb-12 max-w-2xl mx-auto animate-on-scroll fade-in-down" data-delay="200">Reach out today for a no-obligation consultation. Let's discuss your vision and how I can help bring it to life online!</p>
+                <form id="contactForm" class="max-w-xl mx-auto bg-white p-8 sm:p-10 rounded-xl shadow-2xl text-slate-800 animate-on-scroll fade-in-up" data-delay="300">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block mb-2 text-sm font-medium text-slate-700">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="e.g., Jane Doe" required class="!bg-slate-50">
+                        </div>
+                        <div>
+                            <label for="email" class="block mb-2 text-sm font-medium text-slate-700">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required class="!bg-slate-50">
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="service" class="block mb-2 text-sm font-medium text-slate-700">Interested Service (Optional)</label>
+                        <select id="service" name="service" class="!bg-slate-50 !border-2 !border-slate-300 !text-slate-800 !p-3 !rounded-lg w-full focus:!border-sky-500 focus:!ring-sky-500">
+                            <option value="">Select a service</option>
+                            <option value="1-page-site">1-Page Website</option>
+                            <option value="3-page-site">3-Page Website</option>
+                            <option value="resume-site">Resume Website</option>
+                            <option value="not-sure">Not Sure Yet</option>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block mb-2 text-sm font-medium text-slate-700">Project Details / Questions</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell me a bit about your project or any questions you have..." required class="!bg-slate-50"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <button type="button" id="getAiBrief" class="btn !bg-sky-500 hover:!bg-sky-600 !text-white w-full text-sm py-2.5">✨ Get AI-Assisted Project Brief</button>
+                        <div id="aiBriefSuggestions" class="mt-3 hidden"></div>
+                        <p id="aiBriefLoading" class="text-center text-slate-500 text-sm hidden mt-2">🤖 AI is drafting suggestions...</p>
+                        <p id="aiBriefError" class="text-center text-red-500 text-sm hidden mt-2"></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full text-lg py-3.5">Send Your Inquiry</button>
+                    <p id="formStatus" class="mt-4 text-center text-sm h-5"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 py-12 text-center">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <a href="#" class="text-3xl font-extrabold text-white tracking-tight mb-4 inline-block">JWS<span class="text-amber-500">.</span></a>
+            <div class="space-x-4 mb-4">
+                <a href="#faq" class="text-slate-300 hover:text-sky-400 text-sm">FAQ</a>
+                <a href="#terms" class="text-slate-300 hover:text-sky-400 text-sm">Service Terms</a>
+            </div>
+            <p class="mb-2">&copy; <span id="currentYear"></span> Johnson Website Solutions LLC. All rights reserved.</p>
+            <p class="text-sm">Crafting Digital Experiences in Lexington, KY & Beyond.</p>
+            <p class="text-xs mt-4">Designed & Hosted with ❤️ by Randy Johnson.</p>
+        </div>
+    </footer>
+
+    <div id="resumeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Randy Johnson - Professional Portfolio</span>
+                <button id="closeResumeModal" class="modal-close-btn" aria-label="Close resume modal">&times;</button>
+            </div>
+            <div class="modal-iframe-container">
+                <iframe id="resumeIframe" title="Randy Johnson's Resume"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="startupModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Demo: Modern Startup Site</span>
+                <button id="closeStartupModal" class="modal-close-btn" aria-label="Close startup site modal">&times;</button>
+            </div>
+            <div class="modal-iframe-container">
+                <iframe id="startupIframe" title="Modern Startup Site Demo"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="ecommerceModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title">Demo: E-commerce Ready Site</span>
+                <button id="closeEcommerceModal" class="modal-close-btn" aria-label="Close e-commerce site modal">&times;</button>
+            </div>
+            <div class="modal-iframe-container">
+                <iframe id="ecommerceIframe" title="E-commerce Site Demo"></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Content for Resume Modal ---
+        const resumeHtmlContent = `
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0K4WCVW262"><\/script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0K4WCVW262');
+  <\/script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Randy Johnson – Business Professional</title>
+  <link rel="icon" href="profilepic.jpg" type="image/jpeg">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0066cc; /* Main blue */
+      --secondary: #2d3748; /* Dark gray for text */
+      --accent: #4299e1; /* Lighter blue for links */
+      --light: #f7fafc; /* Light gray for backgrounds */
+      --dark: #1a202c; /* Very dark gray for footer */
+      --gray: #718096; /* Medium gray for subtle text */
+      --success: #38a169; /* Green for checkmarks */
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      line-height:1.7; color:var(--secondary);
+      background:#f8f9fa; scroll-behavior:smooth;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex-grow: 1; 
+    }
+    a { color:var(--accent); text-decoration:none; transition:.3s; }
+    a:hover { color:var(--primary); }
+    .container { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
+
+    .header {
+      background:linear-gradient(135deg, var(--primary) 0%, #003366 100%);
+      color:white; padding:3rem 0 2rem; 
+      text-align:center; position:relative; overflow:hidden;
+    }
+    .header::after {
+      content:''; position:absolute; bottom:-5px; left:0;
+      width:100%; height:10px;
+      background:linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+    }
+    .profile-pic {
+      width:120px; height:120px; 
+      border-radius:50%;
+      object-fit:cover; border:4px solid rgba(255,255,255,0.3);
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+      margin:0 auto 1rem; display:block;
+    }
+    .header h1 {
+      font-size:2.5rem; 
+      margin-bottom:.5rem; font-weight:700;
+      letter-spacing:.5px; animation:fadeInUp .5s ease-out forwards;
+    }
+    .header p {
+      font-size:1rem; 
+      font-weight:300; max-width:600px;
+      margin:0.5rem auto 1.5rem; animation:fadeInUp .5s ease-out .2s forwards;
+    }
+    .social-links {
+      display:flex; justify-content:center; gap:1rem;
+      opacity:0; animation:fadeInUp .5s ease-out .4s forwards;
+    }
+    .social-link {
+      width:36px; height:36px; 
+      border-radius:50%;
+      background:rgba(255,255,255,0.1); color:white;
+      display:flex; align-items:center; justify-content:center;
+      transition:.3s; font-size: 0.9rem; 
+    }
+    .social-link:hover { background:rgba(255,255,255,0.2); transform:translateY(-3px); }
+
+    .navbar {
+      background:#fff; box-shadow:0 2px 15px rgba(0,0,0,0.1);
+      position:sticky; top:0; z-index:1000; width:100%; 
+    }
+    .nav-links { display:flex; justify-content:center; list-style:none; flex-wrap: wrap; }
+    .nav-link {
+      padding:0.8rem 1rem; 
+      color:var(--secondary); text-transform:uppercase;
+      font-weight:500; font-size:.8rem; 
+      position:relative;
+    }
+    .nav-link::after {
+      content:''; position:absolute; bottom:0; left:50%; width:0;
+      height:3px; background:var(--primary); transition:.3s;
+      transform:translateX(-50%);
+    }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+    .nav-link:hover, .nav-link.active { color:var(--primary); }
+
+    .main-content { padding:2rem 0; } 
+    .section {
+      background:#fff; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.05);
+      padding:1.5rem; 
+      margin-bottom:2rem; 
+      opacity:0; transform:translateY(20px);
+      animation:fadeInUp .5s ease-out forwards;
+    }
+    .section:nth-of-type(2) { animation-delay:.1s; }
+    .section:nth-of-type(3) { animation-delay:.2s; }
+    .section:nth-of-type(4) { animation-delay:.3s; }
+    .section:nth-of-type(5) { animation-delay:.4s; }
+    .section-header { margin-bottom:1.5rem; position:relative; padding-bottom:.5rem; }
+    .section-header h2 {
+      font-size:1.6rem; 
+      color:var(--primary); font-weight:600;
+    }
+    .section-header::after {
+      content:''; position:absolute; bottom:0; left:0;
+      width:50px; height:3px; background:var(--primary);
+    }
+    .about-content p { margin-bottom:1rem; font-size: 0.95rem; } 
+
+    .timeline { position:relative; padding-left:15px; }
+    .timeline::before {
+      content:''; position:absolute; top:0; left:15px; 
+      width:2px; height:100%;
+      background:#e2e8f0;
+    }
+    .timeline-item { position:relative; margin-bottom:1.5rem; padding-left:30px; }
+    .timeline-marker {
+      position:absolute; top:0; left:5px; 
+      width:20px; height:20px;
+      border-radius:50%; background:var(--primary); border:3px solid #fff;
+    }
+    .timeline-content {
+      background:#f8f9fa; padding:1rem; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.05);
+      font-size: 0.9rem; 
+    }
+    .timeline-content h3 { font-size: 1.1rem; margin-bottom: 0.25rem;}
+    .timeline-content ul { padding-left: 1rem; margin-top: 0.5rem;}
+    .timeline-date {
+      display:inline-block; padding:.25rem .75rem; background:var(--primary);
+      color:#fff; border-radius:20px; font-size:.75rem; margin-bottom:.5rem; 
+    }
+    .education-item h3 { font-size: 1.1rem; margin-bottom: 0.25rem;}
+    .education-item p { font-size: 0.95rem; margin-bottom: 0.25rem;}
+    .education-item ul { list-style: disc; padding-left: 1.2rem; font-size: 0.9rem;}
+
+
+    .skills-container, .portfolio-grid, .contact-grid {
+      display:grid; gap:1.5rem; 
+    }
+    .skills-container { grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); } 
+    .portfolio-grid { grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); } 
+    .contact-grid { grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); } 
+    
+    .skill-category, .portfolio-item {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .skill-category h3, .portfolio-item h3 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--primary); }
+    .skill-category:hover, .portfolio-item:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
+    .skill-list, .portfolio-desc ul { list-style:none; margin-top:.5rem; padding-left: 0; }
+    .skill-item { font-size: 0.9rem; margin-bottom: 0.25rem; } 
+    .skill-item::before {
+      content:"\\f00c"; font-family:"Font Awesome 6 Free"; font-weight:900;
+      margin-right:.5rem; color:var(--success);
+    }
+    .portfolio-item p { font-size: 0.9rem; }
+    .portfolio-link i { margin-left:.25rem; transition:.3s; }
+    .portfolio-link:hover i { transform:translateX(3px); }
+
+    .contact-item { text-align:center; font-size: 0.9rem; } 
+    .contact-icon {
+      width:50px; height:50px; 
+      margin:0 auto .5rem;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:50%; background:var(--primary); color:#fff; font-size:1.3rem; 
+    }
+
+    .footer { background:var(--dark); color:#fff; padding:1.5rem 0; text-align:center; font-size:0.9rem; } 
+    .footer-link { color:#a0aec0; margin:0 .5rem; transition:.3s; }
+    .footer-link:hover { color:#fff; }
+    .copyright { font-size:.75rem; color:var(--gray); margin-top:1rem; } 
+
+    @keyframes fadeInUp {
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+        .header { padding: 2rem 0 1.5rem; }
+        .profile-pic { width: 100px; height: 100px; }
+        .header h1 { font-size: 2rem; }
+        .header p { font-size: 0.9rem; }
+        .nav-links { justify-content: space-around; } 
+        .nav-link { padding: 0.7rem 0.5rem; font-size: 0.75rem; }
+        .main-content { padding: 1.5rem 0; }
+        .section { padding: 1rem; margin-bottom: 1.5rem; }
+        .section-header h2 { font-size: 1.4rem; }
+        .skills-container, .portfolio-grid, .contact-grid { grid-template-columns: 1fr; } 
+    }
+     @media (max-width: 480px) {
+        .header { padding: 1.5rem 0 1rem; }
+        .profile-pic { width: 80px; height: 80px; }
+        .header h1 { font-size: 1.8rem; }
+        .header p { font-size: 0.85rem; }
+        .nav-link { padding: 0.6rem 0.4rem; font-size: 0.7rem; }
+     }
+
+  </style>
+</head>
+<body>
+  <header class="header" id="home">
+    <img src="profilepic.jpg" alt="Randy Johnson" class="profile-pic" onerror="this.onerror=null;this.src='https://placehold.co/120x120/e2e8f0/334155?text=R.J.';">
+    <h1>Randy Johnson</h1>
+    <p>Business Professional with expertise in marketing, technology, and customer service</p>
+    <div class="social-links">
+      <a href="https://www.linkedin.com/in/randy-johnson-1725a869" target="_blank" class="social-link" aria-label="LinkedIn Profile">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="mailto:randy_johnson138@mymail.eku.edu" class="social-link" aria-label="Email Randy Johnson">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <ul class="nav-links container">
+      <li><a href="#home" class="nav-link active">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
+      <li><a href="#education" class="nav-link">Education</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content container">
+    <section id="about" class="section">
+      <div class="section-header"><h2>About Me</h2></div>
+      <div class="about-content">
+        <p>I'm Randy Johnson, holding a Bachelor's degree in Business Administration from Eastern Kentucky University. With years of experience, a sharp eye for detail, and a knack for problem-solving, I craft solutions tailored to your business. Let me turn your vision into reality!</p>
+        <p>I aim to establish a career as a dedicated and effective business professional.</p>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <div class="section-header"><h2>Work Experience</h2></div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">2024</span>
+            <h3>Construction Worker – White Enterprises 316, LLC</h3>
+            <ul>
+              <li>Customer service</li>
+              <li>Installing floors</li>
+              <li>Painting interiors</li>
+              <li>Pressure washing homes</li>
+            </ul>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">2024</span>
+            <h3>Customer Service Rep – Family Dollar</h3>
+            <ul>
+              <li>Assisting customers</li>
+              <li>Cash register transactions</li>
+              <li>Greeting customers</li>
+              <li>Stocking merchandise</li>
+            </ul>
+          </div>
+        </div>
+        </div>
+    </section>
+
+    <section id="education" class="section">
+      <div class="section-header"><h2>Education</h2></div>
+      <div class="education-item">
+        <h3>Bachelor of Business Administration</h3>
+        <span class="timeline-date">May 2013</span>
+        <p><strong>Eastern Kentucky University</strong> (AACSB Accredited)</p>
+        <ul>
+          <li>Human Resource Management</li>
+          <li>Operations Management</li>
+          <li>Business Communications</li>
+          <li>Marketing</li>
+          <li>Entrepreneurship</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="section-header"><h2>Skills</h2></div>
+      <div class="skills-container">
+        <div class="skill-category">
+          <h3>Core Competencies</h3>
+          <ul class="skill-list">
+            <li class="skill-item">Critical thinking & problem solving</li>
+            <li class="skill-item">Adaptability</li>
+            <li class="skill-item">Communication</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Business & Marketing</h3>
+          <ul class="skill-list">
+            <li class="skill-item">Business Plan Writing</li>
+            <li class="skill-item">Logo & Brand Design</li>
+            <li class="skill-item">Marketing Campaigns</li>
+            <li class="skill-item">Website Design</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Technology</h3>
+          <ul class="skill-list">
+            <li class="skill-item">PC repair & troubleshooting</li>
+            <li class="skill-item">Windows OS installation</li>
+            <li class="skill-item">AI: ChatGPT prompt engineering</li>
+            <li class="skill-item">Microsoft 365 & cloud tools</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio" class="section">
+      <div class="section-header"><h2>Portfolio & Work Samples</h2></div>
+      <div class="portfolio-grid">
+        <div class="portfolio-item">
+          <h3>Business Solutions Services</h3>
+          <p>I specialize in bringing business ideas to life with precision and creativity.</p>
+        </div>
+        <div class="portfolio-item">
+          <h3>Promo Video & Logo</h3>
+          <p>Check out a promotional video and logo I created for White Enterprises LLC.</p>
+        </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="section-header"><h2>Contact</h2></div>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <p>(859) 396-xxxx</p> </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <p><a href="mailto:randy_johnson138@mymail.eku.edu">randy_johnson138@mymail.eku.edu</a></p>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fab fa-linkedin-in"></i></div>
+          <p><a href="https://www.linkedin.com/in/randy-johnson-1725a869" target="_blank">linkedin.com/in/randy-johnson-1725a869</a></p>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <p>Lexington, KY 40508</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Thank you for visiting my professional portfolio</p>
+      <div class="footer-links">
+        <a href="#home" class="footer-link" aria-label="Back to top"><i class="fas fa-chevron-up"></i></a>
+        <a href="https://www.linkedin.com/in/randy-johnson-1725a869" target="_blank" class="footer-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="mailto:randy_johnson138@mymail.eku.edu" class="footer-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+      <p class="copyright">&copy; \${new Date().getFullYear()} Randy Johnson. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // highlight nav on scroll
+    const sections = document.querySelectorAll('main section[id]'); 
+    const navLinks = document.querySelectorAll('.navbar .nav-link'); 
+
+    if (sections.length > 0 && navLinks.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              navLinks.forEach(l => l.classList.remove('active'));
+              const activeLink = document.querySelector('.navbar .nav-link[href="#' + e.target.id + '"]');
+              if (activeLink) activeLink.classList.add('active');
+            }
+          });
+        }, { threshold: 0.6 });
+        sections.forEach(s => observer.observe(s));
+    }
+
+    // smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = a.getAttribute('href');
+        try {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior:'smooth' });
+            }
+        } catch (error) {
+            console.warn('Smooth scroll target not found or invalid selector:', targetId, error);
+        }
+      });
+    });
+  <\/script>
+</body>
+</html>`;
+
+        // --- Content for Modern Startup Site Modal ---
+        const modernStartupSiteHtmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovatech Solutions - Mock Startup</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fff; color: #1a202c; }
+        .hero-startup { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .feature-icon svg { width: 48px; height: 48px; }
+    </style>
+</head>
+<body class="antialiased">
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-600">Innovatech</a>
+            <div>
+                <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                <a href="#about-startup" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">About</a>
+                <a href="#contact-startup" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-startup text-white py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6">Revolutionizing Your Workflow</h1>
+            <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto">Innovatech provides cutting-edge solutions to streamline your business processes and boost productivity.</p>
+            <a href="#contact-startup" class="bg-white text-indigo-700 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-100 transition duration-300">Get Started</a>
+        </div>
+    </header>
+
+    <section id="features" class="py-16 md:py-24 bg-slate-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Core Features</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                    <div class="feature-icon text-indigo-500 mx-auto mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Automation</h3>
+                    <p class="text-gray-600">Automate repetitive tasks and save valuable time with our intelligent platform.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                    <div class="feature-icon text-indigo-500 mx-auto mb-4">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Analytics</h3>
+                    <p class="text-gray-600">Gain deep insights into your data with our powerful and intuitive analytics dashboard.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                    <div class="feature-icon text-indigo-500 mx-auto mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Collaboration</h3>
+                    <p class="text-gray-600">Work seamlessly with your team, no matter where they are, with integrated collaboration tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-startup" class="py-16 md:py-24">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">About Innovatech</h2>
+                <p class="text-gray-600 mb-4">Founded in 2024, Innovatech is on a mission to empower businesses with transformative technology. We believe in simplicity, efficiency, and driving real results for our clients.</p>
+                <p class="text-gray-600">Our team of experts is passionate about creating solutions that not only meet but exceed expectations.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-startup" class="py-16 md:py-24 bg-indigo-700 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to Elevate Your Business?</h2>
+            <p class="text-indigo-200 mb-8 max-w-xl mx-auto">Let's discuss how Innovatech can help you achieve your goals. Contact us today for a free consultation.</p>
+            <a href="mailto:contact@innovatech-mock.com" class="bg-white text-indigo-700 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-indigo-100 transition duration-300">Contact Us</a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-400 py-8 text-center">
+        <p>&copy; \${new Date().getFullYear()} Innovatech Solutions (Mock Site). All Rights Reserved.</p>
+    </footer>
+</body>
+</html>`;
+
+        // --- Content for E-commerce Site Modal ---
+        const ecommerceSiteHtmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squarely Yours - Mock E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #1f2937; }
+        .product-card img { aspect-ratio: 1 / 1; object-fit: cover; }
+    </style>
+</head>
+<body class="antialiased">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold text-blue-600">Squarely<span class="text-gray-700">Yours</span></a>
+            <div class="space-x-4">
+                <a href="#shop" class="text-gray-600 hover:text-blue-600">Shop</a>
+                <a href="#new-arrivals" class="text-gray-600 hover:text-blue-600">New Arrivals</a>
+                <a href="#" class="text-gray-600 hover:text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>
+                    <span class="text-xs align-top bg-blue-500 text-white rounded-full px-1.5 py-0.5">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-blue-50 py-12 md:py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-3xl md:text-5xl font-bold text-blue-700 mb-4">Discover Your Next Favorite Thing</h1>
+            <p class="text-gray-600 md:text-lg mb-8">Quality products, curated for you. Simple shopping, powered by reliability.</p>
+            <a href="#shop" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-md hover:bg-blue-700 transition duration-300">Shop All Products</a>
+        </div>
+    </header>
+
+    <section id="shop" class="py-12 md:py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-8 text-center">Our Collection</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden group">
+                    <img src="https://placehold.co/400x400/0ea5e9/ffffff?text=Product+1" alt="Product 1" class="w-full h-56 object-cover group-hover:opacity-90 transition-opacity">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">Artisan Coffee Blend</h3>
+                        <p class="text-gray-500 text-sm mb-2">Rich & Aromatic - 12oz Bag</p>
+                        <p class="text-xl font-bold text-blue-600 mb-3">$15.99</p>
+                        <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-sm font-medium">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden group">
+                    <img src="https://placehold.co/400x400/f59e0b/ffffff?text=Product+2" alt="Product 2" class="w-full h-56 object-cover group-hover:opacity-90 transition-opacity">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">Handcrafted Leather Wallet</h3>
+                        <p class="text-gray-500 text-sm mb-2">Genuine Full-Grain Leather</p>
+                        <p class="text-xl font-bold text-blue-600 mb-3">$49.50</p>
+                        <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-sm font-medium">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden group">
+                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Product+3" alt="Product 3" class="w-full h-56 object-cover group-hover:opacity-90 transition-opacity">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">Organic Green Tea Set</h3>
+                        <p class="text-gray-500 text-sm mb-2">Includes 3 Premium Varieties</p>
+                        <p class="text-xl font-bold text-blue-600 mb-3">$22.00</p>
+                        <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-sm font-medium">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden group">
+                    <img src="https://placehold.co/400x400/7c3aed/ffffff?text=Product+4" alt="Product 4" class="w-full h-56 object-cover group-hover:opacity-90 transition-opacity">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">Wireless Noise-Cancelling Headphones</h3>
+                        <p class="text-gray-500 text-sm mb-2">Immersive Sound Experience</p>
+                        <p class="text-xl font-bold text-blue-600 mb-3">$129.00</p>
+                        <button class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 text-sm font-medium">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="new-arrivals" class="py-12 md:py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-8 text-center">New Arrivals</h2>
+            <p class="text-center text-gray-600 mb-6">Check out the latest additions to our store. Ready for Square integration!</p>
+            <div class="text-center">
+                <a href="#shop" class="text-blue-600 hover:text-blue-700 font-medium">View All New Items &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300 py-10 text-center">
+        <p class="mb-2">SquarelyYours Mock E-commerce &copy; \${new Date().getFullYear()}</p>
+        <p class="text-sm">Powered by reliability, ready for Square.</p>
+    </footer>
+</body>
+</html>`;
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIconOpen = document.getElementById('menuIconOpen');
+            const menuIconClose = document.getElementById('menuIconClose');
+            const header = document.getElementById('header');
+            
+            if (mobileMenuButton && mobileMenu && menuIconOpen && menuIconClose) {
+                mobileMenuButton.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        mobileMenu.classList.remove('hidden');
+                        setTimeout(() => {
+                            mobileMenu.classList.remove('opacity-0', '-translate-y-2');
+                            mobileMenu.classList.add('opacity-100', 'translate-y-0');
+                        }, 10);
+                    } else {
+                        mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+                        mobileMenu.classList.add('opacity-0', '-translate-y-2');
+                        setTimeout(() => {
+                            mobileMenu.classList.add('hidden');
+                        }, 300);
+                    }
+                    menuIconOpen.classList.toggle('hidden');
+                    menuIconClose.classList.toggle('hidden');
+                });
+            }
+
+            function closeMobileMenu() {
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) { 
+                    mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+                    mobileMenu.classList.add('opacity-0', '-translate-y-2');
+                     setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                    if (menuIconOpen && menuIconClose) { 
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                    }
+                }
+            }
+            
+            document.querySelectorAll('#mobileMenu a, #header nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        closeMobileMenu();
+                    }
+                });
+            });
+            
+            document.addEventListener('click', (event) => {
+                if (header && !header.contains(event.target) && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    closeMobileMenu();
+                }
+            });
+            
+            const currentYearEl = document.getElementById('currentYear');
+            if (currentYearEl) { 
+                currentYearEl.textContent = new Date().getFullYear();
+            }
+
+            const contactForm = document.getElementById('contactForm');
+            const formStatus = document.getElementById('formStatus');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    if (formStatus) { 
+                        formStatus.textContent = 'Sending...';
+                        formStatus.className = 'mt-4 text-center text-sm h-5 text-sky-600';
+                    }
+                    
+                    setTimeout(() => {
+                        if (formStatus) { 
+                           formStatus.textContent = 'Message sent! Thank you. I will be in touch soon.';
+                           formStatus.className = 'mt-4 text-center text-sm h-5 text-green-600';
+                        }
+                        contactForm.reset();
+                        setTimeout(() => {
+                           if (formStatus) formStatus.textContent = ''; 
+                        } , 5000);
+                    }, 1500);
+                });
+            }
+
+            const chartHoverDetail = document.getElementById('chartHoverDetail');
+            const setupValueChartCanvas = document.getElementById('setupValueChart');
+            if (setupValueChartCanvas) {
+                const chartData = {
+                    labels: ['Custom Design', 'Domain (1st Year)', 'Site Launch & Setup'],
+                    datasets: [{
+                        label: '$199 Setup Includes',
+                        data: [100, 50, 49],
+                        backgroundColor: ['#0ea5e9', '#f59e0b', '#10b981'],
+                        borderColor: ['#ffffff', '#ffffff', '#ffffff'],
+                        borderWidth: 2,
+                        hoverOffset: 10,
+                        hoverBorderColor: ['#0284c7', '#d97706', '#059669'],
+                        hoverBorderWidth: 3,
+                    }]
+                };
+
+                try { 
+                    const setupChart = new Chart(setupValueChartCanvas, {
+                        type: 'doughnut',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '65%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    enabled: true,
+                                    backgroundColor: '#1e293b',
+                                    titleFont: { size: 14, weight: 'bold' },
+                                    bodyFont: { size: 12 },
+                                    padding: 10,
+                                    cornerRadius: 4,
+                                    displayColors: false,
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `${context.label}: ~$${context.parsed} value`;
+                                        }
+                                    }
+                                }
+                            },
+                            onHover: (event, chartElement) => {
+                                if (chartHoverDetail) {
+                                    if (chartElement.length) {
+                                        const index = chartElement[0].index;
+                                        chartHoverDetail.textContent = `${chartData.labels[index]}: ~$${chartData.datasets[0].data[index]} value`;
+                                    } else {
+                                        chartHoverDetail.innerHTML = 'Hover over chart segments for details.';
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    if (chartHoverDetail) chartHoverDetail.innerHTML = 'Hover over chart segments for details.';
+                } catch (e) {
+                    console.error("Error creating chart:", e);
+                    if (chartHoverDetail) chartHoverDetail.innerHTML = 'Chart could not be loaded.';
+                }
+            }
+            
+            const mainNavLinks = document.querySelectorAll('#header nav a'); 
+            const mainSections = document.querySelectorAll('main section[id]'); 
+            
+            function updateActiveNavLink() {
+                let currentSectionId = '';
+                if (header && mainSections.length > 0) { 
+                    mainSections.forEach(section => {
+                        const sectionTop = section.offsetTop;
+                        if (window.scrollY >= sectionTop - header.offsetHeight - 100) { 
+                            currentSectionId = section.getAttribute('id');
+                        }
+                    });
+                }
+
+                if (mainNavLinks.length > 0) { 
+                    mainNavLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${currentSectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+                const mobileNavLinks = document.querySelectorAll('#mobileMenu a'); 
+                 if (mobileNavLinks.length > 0) { 
+                    mobileNavLinks.forEach(link => {
+                        link.classList.remove('bg-sky-100', 'text-sky-700');
+                        if (link.getAttribute('href') === `#${currentSectionId}`) {
+                            link.classList.add('bg-sky-100', 'text-sky-700');
+                        }
+                    });
+                }
+            }
+            window.addEventListener('scroll', updateActiveNavLink);
+            updateActiveNavLink(); 
+
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            if (animatedElements.length > 0) { 
+                try {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                const delay = parseInt(entry.target.dataset.delay) || 0;
+                                entry.target.style.transitionDelay = `${delay}ms`;
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    animatedElements.forEach(el => observer.observe(el));
+                } catch(e) {
+                    console.error("Error with IntersectionObserver for animations:", e);
+                }
+            }
+
+            // --- AI Website Design Consultant ---
+            const getAiConsultantIdeasButton = document.getElementById('getAiConsultantIdeas');
+            const aiConsultantForm = document.getElementById('ai-consultant-form');
+            const aiConsultantIdeasOutputDiv = document.getElementById('aiConsultantIdeasOutput');
+            const aiConsultantLoading = document.getElementById('aiConsultantLoading');
+            const aiConsultantError = document.getElementById('aiConsultantError');
+            // Textarea IDs for AI ideas
+            const aiIdeaStructureTextarea = document.getElementById('aiIdeaStructure');
+            const aiIdeaHomepageContentTextarea = document.getElementById('aiIdeaHomepageContent');
+            const aiIdeaCTATextarea = document.getElementById('aiIdeaCTA');
+            const aiIdeaStyleTextarea = document.getElementById('aiIdeaStyle');
+            const submitAiBriefButton = document.getElementById('submitAiBriefToJWS');
+
+
+            if (getAiConsultantIdeasButton && aiConsultantForm && aiConsultantIdeasOutputDiv && aiConsultantLoading && aiConsultantError) {
+                getAiConsultantIdeasButton.addEventListener('click', async () => {
+                    // Collect form data
+                    const formData = new FormData(aiConsultantForm);
+                    let clientInput = "Client's Website Requirements:\n";
+                    for (let [key, value] of formData.entries()) {
+                        if (value.trim()) {
+                             const label = aiConsultantForm.querySelector(`label[for="${key}"]`)?.textContent || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                             clientInput += `- ${label.replace(':','')} ${value.trim()}\n`;
+                        }
+                    }
+                    
+                    if (clientInput === "Client's Website Requirements:\n") { // Check if any input was actually provided
+                        aiConsultantError.textContent = 'Please fill in some details about your project.';
+                        aiConsultantError.classList.remove('hidden');
+                        aiConsultantIdeasOutputDiv.classList.add('hidden');
+                        return;
+                    }
+
+                    aiConsultantLoading.classList.remove('hidden');
+                    aiConsultantIdeasOutputDiv.classList.add('hidden');
+                    aiConsultantError.classList.add('hidden');
+                    getAiConsultantIdeasButton.disabled = true;
+                    getAiConsultantIdeasButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const consultantPrompt = `You are an AI Website Design Consultant. A potential client has provided the following information for their new website:
+${clientInput}
+
+Based on this, please generate concise and actionable ideas for their website. Provide the following:
+1.  **Suggested Site Structure / Pages:** (e.g., Home, About, Services (list specific services if mentioned), Portfolio, Blog, Contact). List 3-5 key pages.
+2.  **Key Homepage Content Points:** (e.g., Compelling headline, Brief intro to the business, Highlight key service/product, Client testimonial snippet, Clear call to action). List 3-4 points.
+3.  **Call-to-Action (CTA) Ideas:** (e.g., "Get a Free Quote," "Schedule a Consultation," "View Our Work," "Shop Now"). Suggest 2-3 relevant CTAs.
+4.  **Visual Style & Tone Notes:** (e.g., "Modern and clean with a professional blue color palette," "Friendly and approachable with warm earth tones and illustrative icons," "Minimalist and elegant with high-quality photography"). Provide 1-2 brief suggestions.
+
+Format each of these four sections clearly. Use bullet points for lists within each section where appropriate. Keep each suggestion brief and focused.
+Output ONLY the suggestions for these four sections, starting each section with its title (e.g., "Suggested Site Structure / Pages:").
+`;
+                    
+                    let chatHistory = [{ role: "user", parts: [{ text: consultantPrompt }] }];
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // User's API Key
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) {
+                            let errorData;
+                            try { errorData = await response.json(); } catch (e) { errorData = { error: { message: "Failed to parse API error."}}; }
+                            throw new Error(errorData?.error?.message || `API request failed: ${response.status}`);
+                        }
+                        const result = await response.json();
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                            const ideasText = result.candidates[0].content.parts[0].text;
+                            
+                            // Parse and populate textareas
+                            const structureMatch = ideasText.match(/Suggested Site Structure \/ Pages:([\s\S]*?)(?=Key Homepage Content Points:|$)/i);
+                            const homepageMatch = ideasText.match(/Key Homepage Content Points:([\s\S]*?)(?=Call-to-Action \(CTA\) Ideas:|$)/i);
+                            const ctaMatch = ideasText.match(/Call-to-Action \(CTA\) Ideas:([\s\S]*?)(?=Visual Style & Tone Notes:|$)/i);
+                            const styleMatch = ideasText.match(/Visual Style & Tone Notes:([\s\S]*?$)/i);
+
+                            if(aiIdeaStructureTextarea) aiIdeaStructureTextarea.value = structureMatch ? structureMatch[1].trim() : 'No specific structure suggested.';
+                            if(aiIdeaHomepageContentTextarea) aiIdeaHomepageContentTextarea.value = homepageMatch ? homepageMatch[1].trim() : 'No specific homepage content suggested.';
+                            if(aiIdeaCTATextarea) aiIdeaCTATextarea.value = ctaMatch ? ctaMatch[1].trim() : 'No specific CTAs suggested.';
+                            if(aiIdeaStyleTextarea) aiIdeaStyleTextarea.value = styleMatch ? styleMatch[1].trim() : 'No specific style notes suggested.';
+                            
+                            aiConsultantIdeasOutputDiv.classList.remove('hidden');
+                        } else {
+                            throw new Error("No valid ideas received from AI.");
+                        }
+                    } catch (error) {
+                        console.error('Error fetching AI consultant ideas:', error);
+                        aiConsultantError.textContent = `AI consultant error: ${error.message}. Please ensure your API key is valid if this persists.`;
+                        aiConsultantError.classList.remove('hidden');
+                    } finally {
+                        aiConsultantLoading.classList.add('hidden');
+                        getAiConsultantIdeasButton.disabled = false;
+                        getAiConsultantIdeasButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+            }
+
+            if(submitAiBriefButton) {
+                submitAiBriefButton.addEventListener('click', () => {
+                    const formData = new FormData(aiConsultantForm);
+                    let emailBody = "New Website Project Brief from JWS AI Consultant:\n\n";
+                    emailBody += "CLIENT'S INITIAL INPUT:\n";
+                    for (let [key, value] of formData.entries()) {
+                        if (value.trim()) {
+                            const label = aiConsultantForm.querySelector(`label[for="${key}"]`)?.textContent || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                            emailBody += `- ${label.replace(':','')} ${value.trim()}\n`;
+                        }
+                    }
+                    emailBody += "\n------------------------------------\n";
+                    emailBody += "AI-GENERATED & EDITED IDEAS:\n\n";
+                    emailBody += "Suggested Site Structure / Pages:\n" + (aiIdeaStructureTextarea?.value.trim() || 'N/A') + "\n\n";
+                    emailBody += "Key Homepage Content Points:\n" + (aiIdeaHomepageContentTextarea?.value.trim() || 'N/A') + "\n\n";
+                    emailBody += "Call-to-Action (CTA) Ideas:\n" + (aiIdeaCTATextarea?.value.trim() || 'N/A') + "\n\n";
+                    emailBody += "Visual Style & Tone Notes:\n" + (aiIdeaStyleTextarea?.value.trim() || 'N/A') + "\n";
+                    emailBody += "\n------------------------------------\n";
+                    emailBody += "Please follow up with this potential client.\n";
+
+                    const businessName = formData.get('consultBusinessName')?.trim() || "New Client";
+                    const mailtoLink = `mailto:randyjohnson9515@gmail.com?subject=${encodeURIComponent("New Website Brief: " + businessName)}&body=${encodeURIComponent(emailBody)}`;
+                    window.location.href = mailtoLink;
+                });
+            }
+
+
+            // --- AI-Assisted Project Brief (Contact Form - Existing) ---
+            const getAiBriefButton = document.getElementById('getAiBrief');
+            const projectMessageTextarea = document.getElementById('message');
+            const aiBriefSuggestionsDiv = document.getElementById('aiBriefSuggestions');
+            const aiBriefLoading = document.getElementById('aiBriefLoading');
+            const aiBriefError = document.getElementById('aiBriefError');
+
+            if (getAiBriefButton && projectMessageTextarea && aiBriefSuggestionsDiv && aiBriefLoading && aiBriefError) {
+                getAiBriefButton.addEventListener('click', async () => {
+                    const projectDetails = projectMessageTextarea.value.trim();
+                    if (!projectDetails) {
+                        aiBriefError.textContent = 'Please enter some project details first.';
+                        aiBriefError.classList.remove('hidden');
+                        aiBriefSuggestionsDiv.classList.add('hidden');
+                        return;
+                    }
+
+                    aiBriefLoading.classList.remove('hidden');
+                    aiBriefSuggestionsDiv.innerHTML = '';
+                    aiBriefSuggestionsDiv.classList.add('hidden');
+                    aiBriefError.classList.add('hidden');
+                    getAiBriefButton.disabled = true;
+                    getAiBriefButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const briefPrompt = `A potential client has provided the following project details for a web developer:
+"${projectDetails}"
+
+Act as an AI assistant to help the client refine their inquiry. Please provide:
+1.  **Core Needs Identified:** Briefly list 2-3 core needs you've identified from their details.
+2.  **Clarifying Questions:** Suggest 2-3 important questions the client might want to add to their inquiry to provide more clarity to the developer.
+3.  **Suggested Refinement:** Offer a slightly more structured version of their project details, incorporating the original information and potentially highlighting key areas. Keep it concise.
+
+Format your response clearly with these three headings. Use bullet points for lists.`;
+
+                    let chatHistory = [{ role: "user", parts: [{ text: briefPrompt }] }];
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) {
+                            let errorData;
+                            try { errorData = await response.json(); } catch (e) { errorData = { error: { message: "Failed to parse error."}}; }
+                            throw new Error(errorData?.error?.message || `API request failed: ${response.status}`);
+                        }
+                        const result = await response.json();
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                            const rawText = result.candidates[0].content.parts[0].text;
+                            
+                            let htmlSuggestions = '<div class="ai-suggestion-box">';
+                            const sectionsMap = {
+                                "Core Needs Identified": "<h5>✨ Core Needs Identified:</h5><ul>",
+                                "Clarifying Questions": "</ul><h5>🤔 Clarifying Questions to Consider:</h5><ul>",
+                                "Suggested Refinement": "</ul><h5>📝 Suggested Refinement for Your Inquiry:</h5><p style='white-space: pre-wrap;'>"
+                            };
+
+                            let currentSectionContent = "";
+                            let currentSectionKey = null;
+
+                            rawText.split('\n').forEach(line => {
+                                let handled = false;
+                                for (const key in sectionsMap) {
+                                    if (line.toLowerCase().includes(key.toLowerCase().replace(/\*/g, ''))) { 
+                                        if (currentSectionKey) { 
+                                            if (currentSectionKey === "Suggested Refinement") htmlSuggestions += currentSectionContent.trim() + "</p>";
+                                            else htmlSuggestions += currentSectionContent;
+                                        }
+                                        htmlSuggestions += sectionsMap[key];
+                                        currentSectionKey = key;
+                                        currentSectionContent = "";
+                                        handled = true;
+                                        break;
+                                    }
+                                }
+                                if (!handled && currentSectionKey) {
+                                    if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
+                                         if (currentSectionKey !== "Suggested Refinement") {
+                                            htmlSuggestions += `<li>${line.replace(/^(\*|-)\s*/, '').trim()}</li>`;
+                                         } else {
+                                            currentSectionContent += line + '\n'; 
+                                         }
+                                    } else if (line.trim() && currentSectionKey === "Suggested Refinement") {
+                                        currentSectionContent += line + '\n';
+                                    } else if (line.trim() && currentSectionKey !== "Suggested Refinement") {
+                                        htmlSuggestions += `<li>${line.trim()}</li>`;
+                                    }
+                                }
+                            });
+                            if (currentSectionKey) {
+                                if (currentSectionKey === "Suggested Refinement") htmlSuggestions += currentSectionContent.trim() + "</p>";
+                                else htmlSuggestions += currentSectionContent;
+                            }
+                            if (!htmlSuggestions.includes("</ul>") && (currentSectionKey === "Core Needs Identified" || currentSectionKey === "Clarifying Questions")) {
+                                 htmlSuggestions += "</ul>"; 
+                            }
+
+
+                            htmlSuggestions += `<button onclick="appendToMessage(this.closest('.ai-suggestion-box').querySelector('p')?.textContent || '')">Append Refinement to Message</button>`;
+                            htmlSuggestions += `<button onclick="copyToClipboard(this.closest('.ai-suggestion-box').querySelector('p')?.textContent || '')">Copy Refinement</button>`;
+                            htmlSuggestions += '</div>';
+                            
+                            aiBriefSuggestionsDiv.innerHTML = htmlSuggestions;
+                            aiBriefSuggestionsDiv.classList.remove('hidden');
+                        } else {
+                            throw new Error("No valid suggestions received from AI.");
+                        }
+                    } catch (error) {
+                        console.error('Error fetching AI brief suggestions:', error);
+                        aiBriefError.textContent = `AI suggestion error: ${error.message}`;
+                        aiBriefError.classList.remove('hidden');
+                    } finally {
+                        aiBriefLoading.classList.add('hidden');
+                        getAiBriefButton.disabled = false;
+                        getAiBriefButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+            }
+            
+            // --- AI Animation Idea Generator (Existing) ---
+            const getAnimationIdeasButton = document.getElementById('getAnimationIdeas');
+            const animationBrandIdeaInput = document.getElementById('animationBrandIdea');
+            const animationIdeaSnippetDiv = document.getElementById('animationIdeaSnippet');
+            const animationIdeaErrorP = document.getElementById('animationIdeaError');
+
+            if (getAnimationIdeasButton && animationBrandIdeaInput && animationIdeaSnippetDiv && animationIdeaErrorP) {
+                getAnimationIdeasButton.addEventListener('click', async () => {
+                    const brandIdea = animationBrandIdeaInput.value.trim();
+                    if (!brandIdea) {
+                        animationIdeaErrorP.textContent = 'Please describe your brand/idea.';
+                        animationIdeaErrorP.classList.remove('hidden');
+                        animationIdeaSnippetDiv.textContent = '';
+                        return;
+                    }
+
+                    animationIdeaSnippetDiv.textContent = '🤖 Generating ideas...';
+                    animationIdeaErrorP.classList.add('hidden');
+                    getAnimationIdeasButton.disabled = true;
+                    getAnimationIdeasButton.classList.add('opacity-50');
+
+                    const animationPrompt = `For a brand/concept described as "${brandIdea}", generate 2-3 concise and creative concept ideas for a short (5-10 second) video intro or logo animation. Focus on visual concepts. Output each idea as a short paragraph.`;
+                    
+                    let chatHistory = [{ role: "user", parts: [{ text: animationPrompt }] }];
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // API Key for Gemini
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (!response.ok) {
+                            let errorData;
+                            try { errorData = await response.json(); } catch (e) { errorData = { error: { message: "Failed to parse error."}}; }
+                            throw new Error(errorData?.error?.message || `API request failed: ${response.status}`);
+                        }
+                        const result = await response.json();
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
+                            const ideasText = result.candidates[0].content.parts[0].text;
+                            animationIdeaSnippetDiv.innerHTML = ideasText.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+                        } else {
+                            throw new Error("No animation ideas received from AI.");
+                        }
+                    } catch (error) {
+                        console.error('Error fetching animation ideas:', error);
+                        animationIdeaErrorP.textContent = `AI error: ${error.message}`;
+                        animationIdeaErrorP.classList.remove('hidden');
+                        animationIdeaSnippetDiv.textContent = 'Could not get ideas.';
+                    } finally {
+                        getAnimationIdeasButton.disabled = false;
+                        getAnimationIdeasButton.classList.remove('opacity-50');
+                    }
+                });
+            }
+
+            // --- Modal Opening/Closing Logic ---
+            function setupModal(cardId, modalId, iframeId, iframeContent, modalTitle) {
+                const card = document.getElementById(cardId);
+                const modal = document.getElementById(modalId);
+                const iframe = document.getElementById(iframeId);
+                const closeButton = modal.querySelector('.modal-close-btn'); 
+                const titleElement = modal.querySelector('.modal-title');
+
+                if (card && modal && iframe && closeButton && titleElement) {
+                    titleElement.textContent = modalTitle; 
+
+                    card.addEventListener('click', () => {
+                        iframe.srcdoc = iframeContent; 
+                        modal.classList.add('active');
+                        document.body.style.overflow = 'hidden'; 
+                    });
+
+                    const closeModalFunction = () => {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = ''; 
+                        iframe.srcdoc = ''; 
+                    };
+
+                    closeButton.addEventListener('click', closeModalFunction);
+                    modal.addEventListener('click', (event) => { 
+                        if (event.target === modal) { 
+                            closeModalFunction();
+                        }
+                    });
+                    document.addEventListener('keydown', (event) => {
+                        if (event.key === 'Escape' && modal.classList.contains('active')) {
+                            closeModalFunction();
+                        }
+                    });
+                } else {
+                    console.warn("Modal setup failed for:", cardId, ". Check element IDs.");
+                }
+            }
+
+            setupModal('resumePortfolioCard', 'resumeModal', 'resumeIframe', resumeHtmlContent, "Randy Johnson - Professional Portfolio");
+            setupModal('modernStartupCard', 'startupModal', 'startupIframe', modernStartupSiteHtmlContent, "Demo: Modern Startup Site");
+            setupModal('ecommerceCard', 'ecommerceModal', 'ecommerceIframe', ecommerceSiteHtmlContent, "Demo: E-commerce Ready Site");
+            
+            // FAQ Accordion
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    const answer = item.querySelector('.faq-answer');
+                    const icon = question.querySelector('.toggle-icon');
+
+                    item.classList.toggle('active');
+                    if (item.classList.contains('active')) {
+                        answer.style.display = 'block';
+                        icon.textContent = '-'; 
+                    } else {
+                        answer.style.display = 'none';
+                        icon.textContent = '+'; 
+                    }
+                });
+                const answer = question.parentElement.querySelector('.faq-answer');
+                if (answer) answer.style.display = 'none';
+            });
+
+
+        });
+
+        // Helper function for AI Brief suggestions
+        function appendToMessage(textToAppend) {
+            const messageTextarea = document.getElementById('message');
+            if (messageTextarea && textToAppend) {
+                messageTextarea.value += (messageTextarea.value ? '\n\n--- AI Suggested Refinement ---\n' : '') + textToAppend;
+            }
+        }
+        function copyToClipboard(textToCopy) {
+            if (!textToCopy) return;
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                console.log('AI suggestion copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>
